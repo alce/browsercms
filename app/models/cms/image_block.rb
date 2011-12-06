@@ -2,7 +2,9 @@ module Cms
   class ImageBlock < Cms::AbstractFileBlock
 
     acts_as_content_block :versioned => {:version_foreign_key => :file_block_id},
-                          :belongs_to_attachment => true, :taggable => true
+                          :has_attachments => true, :taggable => true
+
+    has_attachment :image, :url => ":attachment_file_path", :styles => {:thumb => "80x80"}
 
     def set_attachment_file_path
       if @attachment_file_path && @attachment_file_path != attachment.file_path
