@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
 
 
   s.add_dependency('rails', "~> 3.1")
+  s.add_dependency('paperclip', '~> 2.3.5')
 
   # Required only for bcms-upgrade
   s.add_dependency('term-ansicolor')
