@@ -6,8 +6,6 @@ ActiveRecord::Base.connection.instance_eval do
   drop_table(:default_attachable_versions) rescue nil
   create_content_table(:default_attachables, :prefix=>false) do |t|
     t.string :name
-    t.integer :attachment_id
-    t.integer :attachment_version
     t.timestamps
   end
 
@@ -15,30 +13,30 @@ ActiveRecord::Base.connection.instance_eval do
   drop_table(:versioned_attachable_versions) rescue nil
   create_content_table(:versioned_attachables, :prefix=>false) do |t|
     t.string :name
-    t.integer :attachment_id
-    t.integer :attachment_version
     t.timestamps
   end
 end
 
 class DefaultAttachable < ActiveRecord::Base
-  acts_as_content_block :belongs_to_attachment => true
+  acts_as_content_block :has_attachments => true
+  has_attachment :spreadsheet
 end
 
 class VersionedAttachable < ActiveRecord::Base
-  acts_as_content_block :belongs_to_attachment => true
+  acts_as_content_block :has_attachments => true
+  has_attachment :cover
 
-  def set_attachment_file_path
-    if @attachment_file_path && @attachment_file_path != attachment.file_path
-      attachment.file_path = @attachment_file_path
-    end
-  end
+  # def set_attachment_file_path
+  #   if @attachment_file_path && @attachment_file_path != attachment.file_path
+  #     attachment.file_path = @attachment_file_path
+  #   end
+  # end
 
-  def set_attachment_section
-    if @attachment_section_id && @attachment_section_id != attachment.section_id
-      attachment.section_id = @attachment_section_id
-    end
-  end
+  # def set_attachment_section
+  #   if @attachment_section_id && @attachment_section_id != attachment.section_id
+  #     attachment.section_id = @attachment_section_id
+  #   end
+  # end
 end
 
 
@@ -46,7 +44,13 @@ class AttachableBehaviorTest < ActiveSupport::TestCase
 
   def setup
     @file = mock_file
-    @attachable = DefaultAttachable.create!(:name => "File Name", :attachment_section_id=>root_section, :attachment_file => @file, :publish_on_save => true)
+    @attachable = DefaultAttachable.create!(:name => "File Name",
+                                            :attachments_attributes => {
+                                              "0" => {
+                                                :data => @file,
+                                                :section_id => root_section,
+                                                :attachment_name => "spreadsheet"}},
+                                            :publish_on_save => true)
   end
 
   test "Saving a block which an attachment should save both and associate it" do

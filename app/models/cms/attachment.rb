@@ -43,7 +43,11 @@ module Cms
 
       def lambda_for(key)
         lambda do |clip|
-          clip.instance.new_record? ? "" : clip.instance.config_value_for(key)
+          if clip.instance.new_record?
+            key == :styles ? {} : ""
+          else
+            clip.instance.config_value_for(key)
+          end
         end
       end
 
@@ -95,7 +99,7 @@ module Cms
     end
 
     def config_value_for(key)
-      definitions[content_block_class][asset_name][key] || configuration.send(key)
+      definitions[content_block_class][attachment_name][key] || configuration.send(key)
     end
 
     def content_block_class
@@ -191,7 +195,7 @@ module Cms
     end
 
     def set_cardinality
-      self.cardinality = definitions[content_block_class][asset_name][:type].to_s
+      self.cardinality = definitions[content_block_class][attachment_name][:type].to_s
     end
 
     # Forces this record to be changed, even if nothing has changed

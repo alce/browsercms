@@ -8,6 +8,7 @@ class Browsercms340 < ActiveRecord::Migration
     add_content_column :cms_attachments, :attachable_type, :string
     add_content_column :cms_attachments, :attachment_name, :string
     add_content_column :cms_attachments, :attachable_id, :integer
+    add_content_column :cms_attachments, :cardinality, :string
   end
 
   def down
@@ -19,5 +20,6 @@ class Browsercms340 < ActiveRecord::Migration
     remove_content_column :cms_attachments, :attachable_type
     remove_content_column :cms_attachments, :attachment_name
     remove_content_column :cms_attachments, :attachable_id
+    remove_content_column :cms_attachments, :cardinality
   end
 end

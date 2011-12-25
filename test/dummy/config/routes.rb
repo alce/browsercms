@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  namespace :cms  do content_blocks :games end
+
+
   # These are for testing
   match "/__test__", :to => "cms/content#show_page_route"
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100705083859) do
+ActiveRecord::Schema.define(:version => 20111206024118) do
 
   create_table "cms_attachment_versions", :force => true do |t|
     t.integer  "attachment_id"
@@ -24,17 +24,26 @@ ActiveRecord::Schema.define(:version => 20100705083859) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
-    t.boolean  "published",       :default => false
-    t.boolean  "deleted",         :default => false
-    t.boolean  "archived",        :default => false
+    t.boolean  "published",         :default => false
+    t.boolean  "deleted",           :default => false
+    t.boolean  "archived",          :default => false
     t.string   "version_comment"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.string   "data_file_path"
+    t.string   "data_fingerprint"
+    t.string   "attachable_type"
+    t.string   "attachment_name"
+    t.integer  "attachable_id"
+    t.string   "cardinality"
   end
 
   create_table "cms_attachments", :force => true do |t|
     t.integer  "version"
-    t.integer  "lock_version",   :default => 0
+    t.integer  "lock_version",      :default => 0
     t.string   "file_path"
     t.string   "file_location"
     t.string   "file_extension"
@@ -43,11 +52,20 @@ ActiveRecord::Schema.define(:version => 20100705083859) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
-    t.boolean  "published",      :default => false
-    t.boolean  "deleted",        :default => false
-    t.boolean  "archived",       :default => false
+    t.boolean  "published",         :default => false
+    t.boolean  "deleted",           :default => false
+    t.boolean  "archived",          :default => false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.string   "data_file_path"
+    t.string   "data_fingerprint"
+    t.string   "attachable_type"
+    t.string   "attachment_name"
+    t.integer  "attachable_id"
+    t.string   "cardinality"
   end
 
   create_table "cms_categories", :force => true do |t|
@@ -171,6 +189,33 @@ ActiveRecord::Schema.define(:version => 20100705083859) do
     t.datetime "updated_at"
   end
 
+  create_table "cms_game_versions", :force => true do |t|
+    t.integer  "game_id"
+    t.integer  "version"
+    t.string   "name"
+    t.boolean  "published",       :default => false
+    t.boolean  "deleted",         :default => false
+    t.boolean  "archived",        :default => false
+    t.string   "version_comment"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cms_games", :force => true do |t|
+    t.integer  "version"
+    t.integer  "lock_version",  :default => 0
+    t.string   "name"
+    t.boolean  "published",     :default => false
+    t.boolean  "deleted",       :default => false
+    t.boolean  "archived",      :default => false
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "cms_group_permissions", :force => true do |t|
     t.integer "group_id"
     t.integer "permission_id"
@@ -206,10 +251,10 @@ ActiveRecord::Schema.define(:version => 20100705083859) do
     t.integer  "html_block_id"
     t.integer  "version"
     t.string   "name"
-    t.text     "content",         :limit => 16777215
-    t.boolean  "published",                           :default => false
-    t.boolean  "deleted",                             :default => false
-    t.boolean  "archived",                            :default => false
+    t.text     "content",         :limit => 2147483647
+    t.boolean  "published",                             :default => false
+    t.boolean  "deleted",                               :default => false
+    t.boolean  "archived",                              :default => false
     t.string   "version_comment"
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
@@ -219,12 +264,12 @@ ActiveRecord::Schema.define(:version => 20100705083859) do
 
   create_table "cms_html_blocks", :force => true do |t|
     t.integer  "version"
-    t.integer  "lock_version",                      :default => 0
+    t.integer  "lock_version",                        :default => 0
     t.string   "name"
-    t.text     "content",       :limit => 16777215
-    t.boolean  "published",                         :default => false
-    t.boolean  "deleted",                           :default => false
-    t.boolean  "archived",                          :default => false
+    t.text     "content",       :limit => 2147483647
+    t.boolean  "published",                           :default => false
+    t.boolean  "deleted",                             :default => false
+    t.boolean  "archived",                            :default => false
     t.integer  "created_by_id"
     t.integer  "updated_by_id"
     t.datetime "created_at"
@@ -321,6 +366,51 @@ ActiveRecord::Schema.define(:version => 20100705083859) do
     t.integer  "updated_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "cms_pattachment_versions", :force => true do |t|
+    t.integer  "pattachment_id"
+    t.integer  "version"
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.string   "data_file_path"
+    t.string   "data_fingerprint"
+    t.string   "cardinality"
+    t.string   "attachable_type"
+    t.string   "asset_name"
+    t.integer  "attachable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.boolean  "published",         :default => false
+    t.boolean  "deleted",           :default => false
+    t.boolean  "archived",          :default => false
+    t.string   "version_comment"
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
+  end
+
+  create_table "cms_pattachments", :force => true do |t|
+    t.integer  "version"
+    t.integer  "lock_version",      :default => 0
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.string   "data_file_path"
+    t.string   "data_fingerprint"
+    t.string   "cardinality"
+    t.string   "attachable_type"
+    t.string   "asset_name"
+    t.integer  "attachable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.boolean  "published",         :default => false
+    t.boolean  "deleted",           :default => false
+    t.boolean  "archived",          :default => false
+    t.integer  "created_by_id"
+    t.integer  "updated_by_id"
   end
 
   create_table "cms_permissions", :force => true do |t|

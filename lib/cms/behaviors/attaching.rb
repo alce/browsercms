@@ -73,7 +73,7 @@ module Cms
 
           attr_accessor :attachment_id_list
 
-          Attachment.definitions[self.name] = {}
+          Cms::Attachment.definitions[self.name] = {}
           has_many :attachments, :as => :attachable, :dependent => :destroy
 
           accepts_nested_attributes_for :attachments,
@@ -134,8 +134,8 @@ module Cms
 
         def has_attachment(name, options = {})
           options[:type] = :single
-          options[:index] = Attachment.definitions[self.name].size
-          Attachment.definitions[self.name][name] = options
+          options[:index] = Cms::Attachment.definitions[self.name].size
+          Cms::Attachment.definitions[self.name][name] = options
 
           define_method name do
             attachments.named(name).last
@@ -148,7 +148,7 @@ module Cms
 
         def has_many_attachments(name, options = {})
           options[:type] = :multiple
-          Attachment.definitions[self.name][name] = options
+          Cms::Attachment.definitions[self.name][name] = options
 
           define_method name do
             attachments.named name
@@ -167,7 +167,7 @@ module Cms
 
         def unassigned_attachments
           return [] if attachment_id_list.blank?
-          Attachments.find attachment_id_list.split(',').map(&:to_i)
+          Cms::Attachment.find attachment_id_list.split(',').map(&:to_i)
         end
 
         def all_attachments
@@ -180,7 +180,7 @@ module Cms
             ids = attachment_id_list.split(',').map(&:to_i)
             ids.each do |i|
               begin
-                attachment = Attachment.find(i)
+                attachment = Cms::Attachment.find(i)
               rescue ActiveRecord::RecordNotFound
               end
               attachments << attachment if attachment

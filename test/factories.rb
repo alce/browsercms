@@ -22,7 +22,6 @@ end
 
 Factory.define :file_block, :class => Cms::FileBlock do |m|
   m.sequence(:name) { |n| "TestFileBlock#{n}" }
-  m.attachment_section { find_or_create_root_section }
   m.publish_on_save true
 end
 
